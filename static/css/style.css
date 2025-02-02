@@ -1,0 +1,45 @@
+/* Custom Card Styles */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #5f6368; /* Gray text */
+}
+
+.card-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #202124; /* Dark text */
+}
+
+/* Custom Background Colors */
+.bg-clicks {
+    background-color: #e8f0fe; /* Light blue */
+    border-left: 4px solid #1a73e8; /* Blue accent */
+}
+
+.bg-impressions {
+    background-color: #e6f4ea; /* Light green */
+    border-left: 4px solid #34a853; /* Green accent */
+}
+
+.bg-ctr {
+    background-color: #f3e8fd; /* Light purple */
+    border-left: 4px solid #8a63d2; /* Purple accent */
+}
+
+.bg-position {
+    background-color: #f1f3f4; /* Light gray */
+    border-left: 4px solid #5f6368; /* Gray accent */
+}

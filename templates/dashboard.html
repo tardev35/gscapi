@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Console Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Search Console Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Google Search Console Performance</h1>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-clicks">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Clicks</h5>
+                        <p class="card-text">{{ chart_data.total_clicks }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-impressions">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Impressions</h5>
+                        <p class="card-text">{{ chart_data.total_impressions }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-ctr">
+                    <div class="card-body">
+                        <h5 class="card-title">Average CTR</h5>
+                        <p class="card-text">{{ "%.2f" | format(chart_data.average_ctr) }}%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-position">
+                    <div class="card-body">
+                        <h5 class="card-title">Average Position</h5>
+                        <p class="card-text">{{ "%.2f" | format(chart_data.average_position) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Clicks by Query</h5>
+                        <canvas id="clicksChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Impressions by Query</h5>
+                        <canvas id="impressionsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Search Analytics Data</h5>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Query</th>
+                            <th>Page</th>
+                            <th>Country</th>
+                            <th>Device</th>
+                            <th>Clicks</th>
+                            <th>Impressions</th>
+                            <th>CTR</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record.Query }}</td>
+                            <td><a href="{{ record.Page }}" target="_blank">{{ record.Page }}</a></td>
+                            <td>{{ record.Country }}</td>
+                            <td>{{ record.Device }}</td>
+                            <td>{{ record.Clicks }}</td>
+                            <td>{{ record.Impressions }}</td>
+                            <td>{{ "%.2f" | format(record.CTR * 100) }}%</td>
+                            <td>{{ "%.2f" | format(record.Position) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <!-- Chart Scripts -->
+    <script>
+        // Clicks Chart
+        const clicksChart = new Chart(
+            document.getElementById('clicksChart'),
+            {
+                type: 'bar',
+                data: {
+                    labels: {{ chart_data.queries | tojson }},
+                    datasets: [{
+                        label: 'Clicks',
+                        data: {{ chart_data.clicks | tojson }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            }
+        );
+
+        // Impressions Chart
+        const impressionsChart = new Chart(
+            document.getElementById('impressionsChart'),
+            {
+                type: 'bar',
+                data: {
+                    labels: {{ chart_data.queries | tojson }},
+                    datasets: [{
+                        label: 'Impressions',
+                        data: {{ chart_data.impressions | tojson }},
+                        backgroundColor: 'rgba(52, 168, 83, 0.2)', // Light green (#34a853 with 0.2 opacity),
+                        borderColor: 'rgba(52, 168, 83, 1)', // Green accent (#34a853),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            }
+        );
+    </script>
+</body>
+</html>

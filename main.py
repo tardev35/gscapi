@@ -6,12 +6,12 @@ import json
 def main():
     # Authenticate
     creds = authenticate_google()
-
-    site_url = 'sc-domain:devhub.in.th'
+    #site_url = 'sc-domain:devhub.in.th'
+    site_url = 'https://thesuperslot.com'
     
     # Define date range (format: 'YYYY-MM-DD')
-    start_date = '2024-01-01'
-    end_date = '2024-12-31'
+    start_date = '2024-12-11'
+    end_date = '2025-12-31'
     
     # Fetch data
     data = fetch_search_analytics(creds, site_url, start_date, end_date)
