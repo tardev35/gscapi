@@ -1,0 +1,20 @@
+# Ignore sensitive files
+credentials.json
+token.json
+
+# Ignore environment files
+env/
+.env
+
+# Ignore Python virtual environments
+venv/
+.env/
+*.pyc
+__pycache__/
+
+# Ignore data files (if not needed in version control)
+search_analytics.csv
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
